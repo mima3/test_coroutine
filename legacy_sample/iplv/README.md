@@ -1,8 +1,8 @@
 # IPL-Vの動作環境
 
-Lispで実装された[IPL-V](https://github.com/jeffshrager/IPL-V/tree/main)のエミュレータ
+Lispで実装された[IPL-V](https://github.com/jeffshrager/IPL-V/tree/main)のエミュレータを使用したdocker環境
 
-## オリジナルとの差
+## エミュレータのパッチ
 
 J100の呼び出したサブルーチンでH5に-が設定されたら操作を中断するようにしています。
 
