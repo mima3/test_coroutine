@@ -1,0 +1,47 @@
+services:
+  python:
+    image: python:3.13-slim
+    working_dir: /app
+    volumes:
+      - ./python:/app
+    tty: true          # 対話用にTTYを割り当て
+    stdin_open: true   # 標準入力を開いたままに  
+  node:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - ./node:/app
+    tty: true          # 対話用にTTYを割り当て
+    stdin_open: true   # 標準入力を開いたままに  
+  ruby:
+    image: ruby:3.3-alpine
+    working_dir: /app
+    volumes:
+      - ./rb/:/app
+    tty: true          # 端末割り当て（対話用）
+    stdin_open: true   # 標準入力を開いたままに
+  php:
+    image: php:8.3-cli
+    working_dir: /app
+    volumes:
+      - ./php/:/app
+    tty: true          # 端末割り当て（対話用）
+    stdin_open: true   # 標準入力を開いたままに
+  cpp:
+    image: gcc:14
+    working_dir: /app
+    volumes:
+      - ./cpp/:/app
+    tty: true          # 端末割り当て（対話用）
+    stdin_open: true   # 標準入力を開いたままに
+  dotnet:
+    image: mcr.microsoft.com/dotnet/sdk:8.0
+    working_dir: /app
+    volumes:
+      - ./cs/:/app
+    tty: true          # 対話用
+    stdin_open: true   # 標準入力を開いたまま
+    environment:
+      - DOTNET_CLI_TELEMETRY_OPTOUT=1
+      - DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
+    entrypoint: ["/bin/sh", "/app/entrypoints.sh"]

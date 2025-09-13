@@ -137,3 +137,23 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+
+#
+simple_sample/cpp/*
+!simple_sample/cpp/*.sh
+!simple_sample/cpp/*.cpp
+!simple_sample/cpp/*.c
+!simple_sample/cpp/*.h
+
+#
+legacy_sample/simula/work/*
+!legacy_sample/simula/work/*.sim
+
+#
+legacy_sample/clu/work/*
+!legacy_sample/clu/work/*.clu
+
+# 
+legacy_sample/icon/work/*
+!legacy_sample/icon/work/*.icn

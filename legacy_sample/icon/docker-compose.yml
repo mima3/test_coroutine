@@ -1,0 +1,8 @@
+services:
+  icon:
+    build: .
+    working_dir: /work
+    volumes:
+      - ./work/:/work
+    tty: true
+  

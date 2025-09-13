@@ -1,0 +1,41 @@
+BEGIN
+   ! あ...;
+   REF(PING) p; REF(PONG) q;
+   INTEGER t;
+
+   CLASS PING;
+   BEGIN
+      INTEGER i;
+      FOR i := 1 STEP 1 UNTIL 5 DO
+      BEGIN
+         OutText("  Ping "); OutInt(i, 0); OutImage;
+         Detach;
+      END;
+   END;
+
+   CLASS PONG;
+   BEGIN
+      INTEGER j;
+      FOR j := 1 STEP 1 UNTIL 5 DO
+      BEGIN
+         OutText("  Pong "); OutInt(j, 0); OutImage;
+         Detach;
+      END;
+   END;
+
+   OutText("NEW... "); OutImage;
+   p :- NEW PING;  q :- NEW PONG;
+
+   OutText("Start PING "); OutImage;
+   Call(p);
+   OutText("Start PONG "); OutImage;
+   Call(q);
+
+   FOR t := 1 STEP 1 UNTIL 3 DO
+   BEGIN
+      OutText("Resume PING "); OutImage;
+      Resume(p);
+      OutText("Resume PONG "); OutImage;
+      Resume(q);
+   END;
+END;

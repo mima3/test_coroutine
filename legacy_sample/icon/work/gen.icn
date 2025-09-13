@@ -1,0 +1,54 @@
+procedure upto(n)              # 1..n を順に生成（デバッグ出力つき）
+local i
+every i := 1 to n do {
+  write("  [callee] start suspend i=", i)
+  suspend i
+  write("  [callee] end   suspend i=", i)
+}
+end
+
+procedure odds(n)              # 奇数だけ生成（デバッグ出力つき）
+local i
+every i := 1 to n do
+  if i % 2 = 1 then {
+    write("  [callee] start suspend i=", i)
+    suspend i
+    write("  [callee] end   suspend i=", i)
+  }
+end
+
+procedure updown(n)         # 1..n..1 の“往復”を2回の suspend で
+  write("  [callee] start suspend +", i, n-1)
+  suspend 1 to n-1
+  write("  [callee] start suspend -", i, n-1)
+  suspend n to 1 by -1
+  write("  [callee] end")
+end
+
+procedure main()
+write("== 1) 'to' ジェネレータ ==")
+every write(1 to 5)
+
+write("\n== 2) suspend で自作ジェネレータ ==")
+write("[caller] before every")
+every v := upto(5) do {
+  write("[caller] got ", v)
+}
+write("[caller] after every")
+
+write("\n== 3) フィルタ（奇数のみ） ==")
+every v := odds(10) do {
+  write("[caller] got ", v)
+}
+write("[caller] after every")
+
+write("\n== 4) 要素ジェネレータ '!'（リストと文字列） ==")
+every write(![10,20,30])     # → 10,20,30
+every write(!"cat")          # → c,a,t
+
+write("\n== 5) 交替 '|' と every の組み合わせ ==")
+every write( (1 to 3) | (10 to 11) )  # → 1,2,3,10,11
+
+write("\n== 6) suspend がジェネレータを受ける例（往復） ==")
+every write( updown(3) )     # → 1,2,3,2,1
+end

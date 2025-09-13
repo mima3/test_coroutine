@@ -1,0 +1,6 @@
+services:
+  clu:
+    build: .
+    volumes:
+      - ./work:/work
+    working_dir: /work

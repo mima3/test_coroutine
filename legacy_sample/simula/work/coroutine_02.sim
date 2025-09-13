@@ -1,0 +1,28 @@
+BEGIN
+   REF(PROC_1) p1; REF(PROC_2) p2;
+
+   CLASS PROC_1;
+   BEGIN
+      OutText("  Proc1 a"); OutImage;
+      Detach;
+      OutText("  Proc1 b"); OutImage;
+      CALL(p2);
+      OutText("  Proc1 c"); OutImage;
+   END;
+
+   CLASS PROC_2;
+   BEGIN
+      OutText("  Proc2 a"); OutImage;
+      Detach;
+      OutText("  Proc2 b"); OutImage;
+      Detach;
+      OutText("  Proc2 c"); OutImage;
+   END;
+
+
+   OutText("NEW... "); OutImage;
+   p1 :- NEW PROC_1;  p2 :- NEW PROC_2;
+   OutText("RESUME(p1)... "); OutImage;
+   Resume(p1);
+   OutText("END"); OutImage;
+END;

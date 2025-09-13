@@ -1,0 +1,44 @@
+BEGIN
+   TEXT msg; BOOLEAN has;
+
+   ! 送信側（Ping）;
+   CLASS PING;
+   BEGIN
+      INTEGER i; TEXT buf;
+      DETACH;  ! 起動直後は一度戻す（プライミング）;
+      FOR i := 1 STEP 1 UNTIL 5 DO
+      BEGIN
+         buf :- BLANKS(2);    ! 十分な桁幅を確保;
+         buf.putint(i);       ! 整数→文字列（右詰め）;
+         msg :- "  *Ping* " & buf.strip;   ! 連結してメッセージ化;
+         has := TRUE;                     ! 値を書き込む;
+         OutText("Ping -> Pong:"); OutText(msg); OutImage;
+         DETACH;                                    ! 受信側へ切替;
+      END;
+   END;
+
+   ! 受信側（Pong）;
+   CLASS PONG;
+   BEGIN
+      INTEGER j;;
+      DETACH;  ! 起動直後は一度戻す（プライミング）;
+      FOR j := 1 STEP 1 UNTIL 5 DO
+      BEGIN
+         WHILE NOT has DO DETACH;  ! 念のため待機;
+         OutText("  Pong got "); OutText(msg); OutImage;
+         has := FALSE;
+         DETACH;                    ! 送信側へ戻す;
+      END;
+   END;
+
+   REF(PING) p; REF(PONG) q;
+   INTEGER t;
+
+   p :- NEW PING;   q :- NEW PONG;                  ! new で各クラス先頭の DETACH まで進む;
+
+   FOR t := 1 STEP 1 UNTIL 5 DO
+   BEGIN
+      RESUME(p);                                    ! 送信（書き込み）;
+      RESUME(q);                                    ! 受信（読み出し）;
+   END;
+END

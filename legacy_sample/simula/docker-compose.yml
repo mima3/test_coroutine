@@ -1,0 +1,7 @@
+services:
+  simula:
+    build: .
+    volumes:
+      - ./work/:/work
+    working_dir: /work
+    tty: true

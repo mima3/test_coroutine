@@ -1,0 +1,32 @@
+begin
+  ref (RangeGen) g;
+
+  class RangeGen(k); integer k;
+  begin
+    integer i; integer v; boolean done;
+
+    done := false;
+
+    for i := 0 step 1 until k do
+    begin
+      v := i;
+      detach;
+    end;
+
+    done := true;
+    detach;
+  end;
+
+  g :- new RangeGen(5);
+
+  while not g.done do
+  begin
+    call(g);
+    if not g.done then
+    begin
+      OutText("yield "); OutInt(g.v, 0); OutImage;
+    end;
+  end;
+
+  call(g);
+end;

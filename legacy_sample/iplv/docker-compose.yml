@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  iplv:
+    build: .
+    container_name: iplv
+    tty: true
+    working_dir: /app
+    volumes:
+      - ./src:/src

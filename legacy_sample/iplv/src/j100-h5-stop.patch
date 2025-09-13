@@ -1,0 +1,89 @@
+--- iplv.lisp.orig	2025-09-14 01:10:34
++++ iplv.lisp	2025-09-14 01:05:17
+@@ -1615,36 +1615,49 @@
+   (defj J92 () "Create a list of 2 entries" (J9n-helper 2))
+   (defj J93 () "Create a list of 3 entries" (J9n-helper 3))
+ 
+-  (defj J100 ([0] [1]) "GENERATE SYMBOLS FROM LIST (1) FOR SUBPROCESS (0)" ;; USED IN LT
+-	;; J100 GENERATE SYMBOLS FROM LIST (1) FOR SUBPROCESS (0). The subprocess
+-	;; named (0) is performed successively with each of the symbols of list named
+-	;; (1) as input. The order is the order on the list, starting with the first
+-	;; list cell. H5 is always set + at the start of the subprocess. J100 will
+-	;; move in list (1) if it is on auxiliary. [This assumes a linear list.]
+-	(!! :jdeep "             .....J100 GENERATE SYMBOLS FROM LIST ~s FOR SUBPROCESS ~s" [1] [0])
+-	(loop with cell-name = (cell-link (cell [1]))
+-	      with cell = nil
+-	      with exec-symb = [0]
+-	      with inputs-popped = nil
+-	      until (zero? cell-name)
+-	      do 
+-	      (!! :jdeep "             .....J100: cell-name=~s, cell=~s" cell-name cell)
+-	      (setf cell (cell cell-name))
+-	      ;; Setup: arg->H0 and H5=+
+-	      (let* ((r (cell-symb cell)))
+-		;; This only pops the 2 inputs on the first call-down!
+-		;; Be afraid...be very afraid!  See! I told you to be
+-		;; afraid! If this call doesn't happen, the args get
+-		;; left on the stack .. see FINALLY fix, below.
+-		(unless inputs-popped (poph0 2) (setf inputs-popped t))
+-		(ipush "H0" r))
+-	      (H5+)
+-	      (!! :jdeep "             .....J100: Exec'ing ~s on ~s" exec-symb (cell-symb (h0)))
+-	      (ipl-eval exec-symb)
+-	      (setf cell-name (cell-link cell))
+-	      (!! :jdeep "             .....J100 returned, H5=~s, next cell-name=~s" (H5) cell-name)
+-	      finally (unless inputs-popped (poph0 2)) ;; In case NOTHING is called still need to do the pops!!
+-	      ))
++(defj J100 ([0] [1]) "GENERATE SYMBOLS FROM LIST (1) FOR SUBPROCESS (0)" ;; USED IN LT
++  ;; J100 GENERATE SYMBOLS FROM LIST (1) FOR SUBPROCESS (0). The subprocess
++  ;; named (0) is performed successively with each of the symbols of list named
++  ;; (1) as input. The order is the order on the list, starting with the first
++  ;; list cell. H5 is always set + at the start of the subprocess. J100 will
++  ;; move in list (1) if it is on auxiliary. [This assumes a linear list.]
++  (!! :jdeep "             .....J100 GENERATE SYMBOLS FROM LIST ~s FOR SUBPROCESS ~s" [1] [0])
++  (loop with cell-name = (cell-link (cell [1]))
++        with cell = nil
++        with exec-symb = [0]
++        with inputs-popped = nil
++        ;; for check H5.
++        ;; H5 is safe over the generator:
++        ;; The sign of H5 left by the subprocess at one occurrence will exist at the next occurrence 
++        ;; (it must be + to keep the generator going).
++        ;; INFORMATION PROCESSING LANGUAGE V MANUAL Section II. Programmers' Reference Manual 1960
++        with stopped-by-h5? = nil
++        until (zero? cell-name)
++        do 
++        (!! :jdeep "             .....J100: cell-name=~s, cell=~s" cell-name cell)
++        (setf cell (cell cell-name))
++        ;; Setup: arg->H0 and H5=+
++        (let* ((r (cell-symb cell)))
++          ;; This only pops the 2 inputs on the first call-down!
++          ;; Be afraid...be very afraid!  See! I told you to be
++          ;; afraid! If this call doesn't happen, the args get
++          ;; left on the stack .. see FINALLY fix, below.
++          (unless inputs-popped (poph0 2) (setf inputs-popped t))
++          (ipush "H0" r))
++        (H5+)
++        (!! :jdeep "             .....J100: Exec'ing ~s on ~s" exec-symb (cell-symb (h0)))
++        (ipl-eval exec-symb)
++        ;; NEW: stop if subprocess left H5 = "-"
++        (when (string= (H5) "-")
++          (setf stopped-by-h5? t)
++          (loop-finish))
++        (setf cell-name (cell-link cell))
++        (!! :jdeep "             .....J100 returned, H5=~s, next cell-name=~s" (H5) cell-name)
++        finally
++          (unless inputs-popped (poph0 2)) ;; In case NOTHING is called still need to do the pops!!
++          ;; NEW: if finished the list (not stopped by H5 "-"), exit with H5+
++          (unless stopped-by-h5? (H5+))
++        ))
+ 
+   (defj J110 ([0] [1] [2]) "(1) + (2) = (O)" 
+ 	;; The number (0) is set equal to the algebraic difference between numbers
+@@ -3017,4 +3030,4 @@
+ 
+ 	  ))
+   (load-ipl "LT/LTFixed.liplv" :adv-limit 500000)
+-  )
++  )
+\ No newline at end of file
