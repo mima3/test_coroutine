@@ -15,7 +15,9 @@ docker compose down
 ## Simulaのプログラムの実行方法
 
 ```bash
+# Detach+Resume 対称
 docker compose run --rm simula sh -lc 'gnucim ./coroutine_01.sim -o coroutine_01 && ./coroutine_01'
 
+# Detach+Call 非対称
 docker compose run --rm simula sh -lc 'gnucim ./coroutine_02.sim -o coroutine_02 && ./coroutine_02'
 ```

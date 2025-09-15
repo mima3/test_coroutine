@@ -15,10 +15,12 @@ docker compose down
 ```bash
 # generatorのサンプル
 docker compose run --rm ruby ruby /app/generator.rb
-# fibers.yieldのサンプル
+# fibers.yieldのサンプル(非対称コルーチン)
 docker compose run --rm ruby ruby /app/coroutine.rb
-# fibers.transferのサンプル
+# fibers.transferのサンプル(対称コルーチン)
 docker compose run --rm ruby ruby /app/transfer.rb
+# スタックフルコルーチンの例
+docker compose run --rm ruby ruby /app/stackfull.rb
 ```
 
 ### PHP
@@ -38,6 +40,7 @@ docker compose run --rm cpp bash /app/transfer.sh
 ### Python3.4
 
 ```bash
+# generatorベースの非同期I/Oの実験
 docker compose run --rm python34 python /app/coroutine_old.py
 
 ```
