@@ -1,0 +1,15 @@
+% CLU's iterator sample
+
+from_to = iter(lo, hi: int) yields(int)
+    po: stream := stream$primary_output()
+    i: int := lo
+    while i <= hi do
+        stream$putl(po, "  start...yield")
+        yield (i)
+        stream$putl(po, "  end...yield")
+        i := i + 1
+    end
+end from_to
+
+it := from_to(1, 5);      % コンパイルエラー
+% c  := next(it);         % 「次を手で取る」APIも無い
