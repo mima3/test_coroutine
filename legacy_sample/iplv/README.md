@@ -14,30 +14,12 @@ J100の呼び出したサブルーチンでH5に-が設定されたら操作を�
 
 [INFORMATION PROCESSING LANGUAGE V MANUAL Section II. Programmers' Reference 1960 p51](https://iiif.library.cmu.edu/file/Newell_box00003_fld00181_doc0001/Newell_box00003_fld00181_doc0001.pdf)
 
->J100 GENERATE SYMBOLS FROM LIST (l) FOR 8UBPROCESS (0). The subprocess named (0) is performed successively with each of the symbols of list named (l) as input. The order is the order on the list, starting with the first list cell. H5 is safe over the generator: The sign of H5 left by the subprocess at one occurrence will exist at the next occurrence (it must be 4- to keep the generator going).
+>J100 GENERATE SYMBOLS FROM LIST (1) FOR SUBPROCESS (0). The subprocess named (0) is performed successively with each of the symbols of list named (1) as input. The order is the order on the list, starting with the first list cell. H5 is safe over the generator: The sign of H5 left by the subprocess at one occurrence will exist at the next occurrence (it must be + to keep the generator going).
 
 [INFORMATION PROCESSING LANGUAGE-V MANUAL 1964](https://stacks.stanford.edu/file/druid:yz379pw9306/yz379pw9306.pdf)の「9.0 GENERATOR CONSTRUCTION」中のJ100のコードで行っている処理
 
->J100 is the simplest of generators; let us examine
-how it is constructed. Basically, of course, it consists
-of a loop to go down the list. But it must have some
-place to keep both the location in the list and the name
-of the subprocess while the subprocess is working. Likewise, it must be sure that it doesn't destroy any of the
-information used by the subprocess. To see this problem
-clearly, suppose we code J100 as follows, which seems
+>J100 is the simplest of generators; let us examine how it is constructed. Basically, of course, it consists of a loop to go down the list. But it must have some place to keep both the location in the list and the name of the subprocess while the subprocess is working. Likewise, it must be sure that it doesn't destroy any of the information used by the subprocess. To see this problem clearly, suppose we code J100 as follows, which seems
 perfectly straightforward:
-
-|NAME|PQ|SYMB|LINK|COMMENTS|
-|:---|:---|:---|:---|:---|
-|JJlOOlO| |J5l||Put subp subprocess in WO, list
-name in Wl, push down W's.|
-|9-2 |11|W1||Input location on list.|
-|       |  |J6O| |Locate next. 20 W1 Put back in W1 prior to branch. |
-|    |70|9-1|||
-|    |12|W1||Input symbol in cell of list for subprocess.|
-|    |01|W0||Execute subprocess (P=0, Q-1) .|
-|    |70|J3l|9-2|If subprocess returns H5-, quit with H5-.|
-|9-1 |  |J4|J3l|If went to end of list,quit with Hs+.|
 
 ## ビルドとコンテナの起動
 

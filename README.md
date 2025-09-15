@@ -101,7 +101,7 @@ coroutineはJoel Drdwinnの“Bilateral Linkage,”という論文で執筆さ�
 
 >Probably the earliest published form of coroutines were the "generators" of Information Processing Language V (IPL-V), a symbol and list structure manipulation language described by Newell and Tonge
 
-IPL-Vは1956年から登場した[Information Processing Language](https://en.wikipedia.org/wiki/Information_Processing_Language)の5世代目です。
+IPL-Vは1956年から登場した[Information Processing Language](https://en.wikipedia.org/wiki/Information_Processing_Language)の第5版です。
 このプログラミング言語はアセンブリ言語のスタイルで書かれています。
 
 List、そして今回のgeneratorを取り入れた初期のプログラミング言語になります。とくに[Lisp](https://www-formal.stanford.edu/jmc/history/lisp/node2.html)に影響を与えたといわれます。

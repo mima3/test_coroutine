@@ -13,8 +13,11 @@ docker compose down
 ### Ruby
 
 ```bash
+# generatorのサンプル
 docker compose run --rm ruby ruby /app/generator.rb
+# fibers.yieldのサンプル
 docker compose run --rm ruby ruby /app/coroutine.rb
+# fibers.transferのサンプル
 docker compose run --rm ruby ruby /app/transfer.rb
 ```
 
