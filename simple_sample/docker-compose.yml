@@ -1,9 +1,16 @@
 services:
-  python:
+  python313:
     image: python:3.13-slim
     working_dir: /app
     volumes:
-      - ./python:/app
+      - ./python313:/app
+    tty: true          # 対話用にTTYを割り当て
+    stdin_open: true   # 標準入力を開いたままに  
+  python34:
+    image: python:3.4-slim
+    working_dir: /app
+    volumes:
+      - ./python34:/app
     tty: true          # 対話用にTTYを割り当て
     stdin_open: true   # 標準入力を開いたままに  
   node:

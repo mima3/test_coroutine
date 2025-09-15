@@ -32,11 +32,22 @@ docker compose run --rm cpp bash /app/coroutine.sh
 docker compose run --rm cpp bash /app/transfer.sh
 ```
 
-### Python
+### Python3.4
+
+```bash
+docker compose run --rm python34 python /app/coroutine_old.py
 
 ```
-docker compose run --rm python python /app/generator01.py
-docker compose run --rm python python /app/coroutine.py
+
+### Python3.13
+
+```bash
+# シンプルなgeneratorの実験
+docker compose run --rm python313 python /app/generator01.py
+# generatorにたいしてsend/throwの実験
+docker compose run --rm python313 python /app/generator02.py
+# coroutineの実験
+docker compose run --rm python313 python /app/coroutine01.py
 ```
 
 ### node
